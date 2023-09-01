@@ -40,62 +40,71 @@ def test_check_incorrect_username():
     driver.close()
 
 
+# Individual tests
+
+
 @pytest.mark.ui1
 def test_check_Wiki():
     driver = webdriver.Chrome(
         service=Service(r"D:\\courses\\qa auto\\git\\qaauto1" + "\\chromdriver.exe")
     )
 
-    # відкриваю сторінку Вікіпедії
+    # Open the Wikipedia page
     driver.get(
         "https://uk.wikipedia.org/wiki/%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0_%D1%81%D1%82%D0%BE%D1%80%D1%96%D0%BD%D0%BA%D0%B0"
     )
 
-    # Знаходимо кнопку Увійти і емулюємо клік мишкою
+    # Find "Log In" button and emulate a mouse click
     btn_elem = driver.find_element(By.ID, "pt-login")
     btn_elem.click()
 
-    # Знаходимо поле для логіну користувача і вводимо логін користувача
+    # Find field for Username and enter Username
     user_elem = driver.find_element(By.ID, "wpName1")
     user_elem.send_keys("Antonio cassano86")
 
-    # Знаходимо поле для паролю і вводимо пароль
+    # Find field for Password and enter Password
     pass_elem = driver.find_element(By.ID, "wpPassword1")
     pass_elem.send_keys(".dtynec86")
 
-    # Знаходимо кнопку Вхід і емулюємо клік мишкою
+    # Find "Log in" button and emulate a mouse click
     btn1_elem = driver.find_element(By.NAME, "wploginattempt")
     btn1_elem.click()
 
-    # Перевіряємо, що назва сторінки така, яку ми очікуємо
+    # Check that the name of the page is what we expect
     assert driver.title == "Вікіпедія"
 
-    # Знаходимо поле для пошуку і вводимо слово для пошуку
+    # Find Search field and enter Search word
     search_elem = driver.find_element(By.NAME, "search")
     search_elem.send_keys("Україна")
 
-    # Знаходимо кнопку Пошук і емулюємо клік мишкою
+    # Find Search button and emulate a mouse click
     btn2_elem = driver.find_element(By.ID, "searchButton")
     btn2_elem.click()
 
-    # Перевіряємо, що назва сторінки така, яку ми очікуємо
+    # Check that the name of the page is what we expect
     assert driver.title == "Україна — Вікіпедія"
 
-    # Знаходимо кнопку домашньої сторінки користувача і емулюємо клік мишкою
+    # Find User home page button and emulate a mouse click
     btn3_elem = driver.find_element(By.ID, "pt-userpage")
     btn3_elem.click()
 
-    # Знаходимо вкладку сторінки користувача і емулюємо клік мишкою
+    # Check that the name of the page is what we expect
+    assert driver.title == "Привіт, Antonio cassano86! — Вікіпедія"
+
+    # Find User page tab and emulate a mouse click
     btn4_elem = driver.find_element(By.ID, "ca-user")
     btn4_elem.click()
 
-    # Знаходимо кнопку обговорення і емулюємо клік мишкою
+    # Find Talk tab and emulate a mouse click
     btn5_elem = driver.find_element(By.ID, "ca-talk")
     btn5_elem.click()
 
-    # Знаходимо кнопку Вийти і емулюємо клік мишкою
+    # Find "Log out" button and emulate a mouse click
     btn6_elem = driver.find_element(By.ID, "pt-logout")
     btn6_elem.click()
 
-    # Закриваю браузер
+    # Check that the name of the page is what we expect
+    assert driver.title == "Вихід із системи — Вікіпедія"
+
+    # Close the browser
     driver.close()
