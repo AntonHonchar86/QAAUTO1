@@ -9,14 +9,6 @@ def test_database_connection():
 
 
 @pytest.mark.database
-def test_check_all_users():
-    db = Database()
-    users = db.get_all_users()
-
-    print(users)
-
-
-@pytest.mark.database
 def test_check_user_sergii():
     db = Database()
     user = db.get_user_address_by_name("Sergii")
@@ -70,10 +62,14 @@ def test_detailed_orders():
     assert orders[0][3] == "з цукром"
 
 
-@pytest.mark.database
+# Individual tests
+
+
+@pytest.mark.database_my
 def test_insert_user(database):
     database.insert_user(3, "Anton", "Svitla, 6", "Kyiv", "1212", "Ukraine")
     customers = database.get_detailed_customers_by_id(3)
+
     assert customers[0][0] == 3
     assert customers[0][1] == "Anton"
     assert customers[0][2] == "Svitla, 6"
@@ -82,11 +78,12 @@ def test_insert_user(database):
     assert customers[0][5] == "Ukraine"
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_wrong_type_data_user_insert(database):
+    # Check the possibility to enter wrong data types in the table
     database.insert_user(4, 1, 2.0, True, 4, 5)
     customers = database.get_detailed_customers_by_id(4)
-    # Перевірка, що в таблицю можна вносити некоректні типи даних
+
     assert type(customers[0][1]) != type(1)
     assert type(customers[0][2]) != type(2.0)
     assert type(customers[0][3]) != type(True)
@@ -94,29 +91,34 @@ def test_wrong_type_data_user_insert(database):
     assert type(customers[0][5]) != type(5)
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_wrong_type_data_product_insert(database):
+    # Check the possibility to enter wrong data types to the table
     database.insert_product(5, False, 2.0, "22")
     products = database.get_detailed_products_by_id(5)
-    # Перевірка, що в стовбці таблиці можна вносити некоректні типи даних
+
     assert type(products[0][1]) != type(False)
     assert type(products[0][2]) != type(2.0)
     assert type(products[0][3]) != type("22")
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_user_delete_by_id(database):
+    # Check the possibility to delete user from table by id
     database.insert_user(5, "Ivan", "Street", "City", "111", "Country")
     database.delete_user_by_id(5)
     user = database.get_detailed_customers_by_id(5)
+
     assert len(user) == 0
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_insert_order(database):
+    # Check the possibility to insert new order to the table
     database.insert_orders(2, 2, 2, "12:12:12")
     orders = database.get_orders_by_id(2)
     detailed_orders = database.get_detailed_orders()
+
     assert orders[0][0] == 2
     assert orders[0][1] == 2
     assert orders[0][2] == 2
@@ -124,30 +126,33 @@ def test_insert_order(database):
     assert detailed_orders[1][1] == "Stepan"
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_wrong_type_data_orders_insert(database):
+    # Check the possibility to enter wrong data types to the table
     database.insert_orders(3, 2.0, True, "12:12:12")
     orders = database.get_orders_by_id(3)
-    # Перевірка, що в стовбці таблиці можна вносити некоректні типи даних
+
     assert type(orders[0][1]) != type(2.0)
     assert type(orders[0][2]) != type(True)
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_order_delete_by_id(database):
+    # Check the possibility to delete order from table by id
     database.insert_orders(4, 2, 2, "11:11:11")
     database.delete_order_by_id(4)
     order = database.get_orders_by_id(4)
+
     assert len(order) == 0
 
 
-@pytest.mark.database
+@pytest.mark.database_my
 def test_check_add_wrong_id_to_orders(database):
-    # Перевірка, що в таблицю orders можна внести дані з неіснуючим зовнішним ключем
+    # Check the possibility to enter data with wrong Foreign key to the table Orders
     database.insert_orders(4, 8, 1, "12:12:12")
-    list = database.get_customers_id()
-    print(list)
-    # detailed_orders = db.get_detailed_orders()
-    cust_id = database.get_customers_id_from_orders_by_id(4)
-    print(cust_id)
+    list = database.get_customers_id()  # List of Primary keys table Customers
+    cust_id = database.get_customers_id_from_orders_by_id(
+        4
+    )  # Foreign key new order from the table Order
+
     assert cust_id[0] not in list

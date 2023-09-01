@@ -12,19 +12,19 @@ class UiWiki(BasePage):
         self.driver.get(UiWiki.URL)
 
     def try_login(self, username, password):
-        # Знаходимо кнопку Увійти і емулюємо клік мишкою
+        # Find "Log In" button and emulate a mouse click
         btn_elem = self.driver.find_element(By.ID, "pt-login")
         btn_elem.click()
 
-        # Знаходимо поле для логіну користувача і вводимо логін користувача
+        # Find field for Username and enter Username
         user_elem = self.driver.find_element(By.ID, "wpName1")
         user_elem.send_keys(username)
 
-        # Знаходимо поле для паролю і вводимо пароль
+        # Find field for Password and enter Password
         pass_elem = self.driver.find_element(By.ID, "wpPassword1")
         pass_elem.send_keys(password)
 
-        # Знаходимо кнопку Вхід і емулюємо клік мишкою
+        # Find "Log in" button and emulate a mouse click
         btn1_elem = self.driver.find_element(By.NAME, "wploginattempt")
         btn1_elem.click()
 
@@ -32,28 +32,28 @@ class UiWiki(BasePage):
         return self.driver.title == expected_title
 
     def try_find_word(self, word):
-        # Знаходимо поле для пошуку і вводимо слово для пошуку
+        # Find search field and enter Search word
         search_elem = self.driver.find_element(By.NAME, "search")
         search_elem.send_keys(word)
 
-        # Знаходимо кнопку Пошук і емулюємо клік мишкою
+        # Find Search button and emulate a mouse click
         btn2_elem = self.driver.find_element(By.ID, "searchButton")
         btn2_elem.click()
 
     def try_in_user_home_page(self):
-        # Знаходимо кнопку домашньої сторінки користувача і емулюємо клік мишкою
+        # Find User home page button and emulate a mouse click
         btn3_elem = self.driver.find_element(By.ID, "pt-userpage")
         btn3_elem.click()
 
-        # Знаходимо вкладку сторінки користувача і емулюємо клік мишкою
+        # Find User page tab and emulate a mouse click
         btn4_elem = self.driver.find_element(By.ID, "ca-user")
         btn4_elem.click()
 
-        # Знаходимо кнопку обговорення і емулюємо клік мишкою
+        # Find Talk tab and emulate a mouse click
         btn5_elem = self.driver.find_element(By.ID, "ca-talk")
         btn5_elem.click()
 
     def try_log_out(self):
-        # Знаходимо кнопку Вийти і емулюємо клік мишкою
+        # Find "Log out" button and emulate a mouse click
         btn6_elem = self.driver.find_element(By.ID, "pt-logout")
         btn6_elem.click()

@@ -1,5 +1,6 @@
 from modules.ui.page_objects.sign_in_page import SignInPage
 from modules.ui.page_objects.ui_wiki import UiWiki
+
 import pytest
 
 
@@ -21,31 +22,40 @@ def test_check_incorrect_username_page_object():
     sign_in_page.close()
 
 
-@pytest.mark.ui1
+# Individual tests
+
+
+@pytest.mark.ui_my
 def test_Wiki_page_object():
-    # створення об'єкту сторінки
+    # Create a page object
     ui_wiki = UiWiki()
 
-    # Відкриваємо стартову сторінку Вікіпедії
+    # Open the Wikipedia page
     ui_wiki.go_to()
 
-    # Виконуємо спробу залогінитись на сайті
-    ui_wiki.try_login("Antonio cassano86", ".dtynec86")
-
-    # Перевіряємо, що назва сторінки така, яку ми очікуємо
+    # Check that the name of the page is what we expect
     assert ui_wiki.check_title("Вікіпедія")
 
-    # Виконуємо спробу зробити пошук на сайті
+    # Try to Log in
+    ui_wiki.try_login("Antonio cassano86", ".dtynec86")
+
+    # Check that the name of the page is what we expect
+    assert ui_wiki.check_title("Вікіпедія")
+
+    # Trying to search on the site
     ui_wiki.try_find_word("Україна")
 
-    # Перевіряємо, що назва сторінки така, яку ми очікуємо
+    # Check that the name of the page is what we expect
     assert ui_wiki.check_title("Україна — Вікіпедія")
 
-    # Перевіряємо можливість зайти на домашню сторінку користувача і там переключатись між вкладками
+    # Check the ability to enter to the User home page and switch between tabs
     ui_wiki.try_in_user_home_page()
 
-    # Перевіряємо можливість вилогінитись з системи
+    # Try to Log out
     ui_wiki.try_log_out()
 
-    # Закриваємо браузер
+    # Check that the name of the page is what we expect
+    assert ui_wiki.check_title("Вихід із системи — Вікіпедія")
+
+    # Close the browser
     ui_wiki.close()

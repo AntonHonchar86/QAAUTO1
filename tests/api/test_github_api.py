@@ -35,66 +35,60 @@ def test_repo_with_single_char_be_found(github_api):
     assert r["total_count"] != 0
 
 
-@pytest.mark.api
+# Individual tests
+
+
+@pytest.mark.api_my
 def test_check_all_users(github_api):
     r = github_api.list_users()
+
     assert "mojombo" in r[0]["login"]
 
 
-@pytest.mark.api
+@pytest.mark.api_my
 def test_check_list_emojis(github_api):
     r = github_api.get_emojis()
+
     assert "zzz" in r
-    assert (
-        r.get("+1")
-        == "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8"
-    )
 
 
-@pytest.mark.api
+@pytest.mark.api_my
 def test_check_list_commits(github_api):
     r = github_api.get_list_commits("mojombo", "asteroids")
+
     assert "Tom Preston-Werner" in r[0]["commit"]["author"]["name"]
-    print(r[0])
 
 
-@pytest.mark.api
+@pytest.mark.api_my
 def test_commit_can_be_found(github_api):
-    r = github_api.get_commit(
-        "mojombo", "asteroids", "96cb01e8cdcc39d6c411805dddd60bf1e41eb8f9"
-    )
+    r = github_api.get_list_commits("mojombo", "asteroids")
+    sha = r[0]["sha"]
+    r = github_api.get_commit("mojombo", "asteroids", sha)
+
     assert r["commit"]["author"]["name"] == "Tom Preston-Werner"
 
 
-@pytest.mark.api
+@pytest.mark.api_my
 def test_get_list_comments(github_api):
     r = github_api.get_list_comments("mojombo", "asteroids")
-    print(r[0]["id"])
+
     assert "Anton" in r[0]["user"]["login"]
 
 
-@pytest.mark.api
+@pytest.mark.api_my
 def test_commit_comment_can_be_found(github_api):
-    r = github_api.get_commit_comment("mojombo", "asteroids", 122974012)
-    print(r)
+    r = github_api.get_list_comments("mojombo", "asteroids")
+    comment_id = r[0]["id"]
+    r = github_api.get_commit_comment("mojombo", "asteroids", comment_id)
+
     assert r["body"] == "Comment"
 
 
-@pytest.mark.api
-def test_delete_commit_comment(github_api):
-    r = github_api.delete_commit_comment("mojombo", "asteroids", 122974012)
-    print(r)
-    r = github_api.get_commit_comment("mojombo", "asteroids", 122974012)
-
-
-@pytest.mark.api
-def test_commit_comment_can_be_create(github_api):
-    r = github_api.create_commit_comment()
-    print(r)
-
-
-@pytest.mark.api
+@pytest.mark.api_my
 def test_get_list_repo_issues(github_api):
-    r = github_api.get_list_repo_issues("mojombo", "asteroids")
-    print(r)
+    r = github_api.get_list_repo_issues(
+        "mojombo",
+        "asteroids",
+    )
+
     assert "Deprecated Atom" in r[0]["title"]

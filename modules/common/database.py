@@ -58,6 +58,8 @@ class Database:
         record = self.cursor.fetchall()
         return record
 
+    # Individual methods
+
     def insert_user(self, user_id, name, address, city, postalCode, country):
         query = f"INSERT OR REPLACE INTO customers(id,name,address,city,postalCode,country)\
             VALUES({user_id},'{name}','{address}','{city}','{postalCode}','{country}')"
@@ -69,6 +71,7 @@ class Database:
         query = f"SELECT id,name,address,city,postalCode,country FROM customers WHERE id={user_id}"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
 
     def get_detailed_products_by_id(self, product_id):
@@ -77,6 +80,7 @@ class Database:
         )
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
 
     def delete_user_by_id(self, user_id):
@@ -94,6 +98,7 @@ class Database:
         query = f"SELECT id,customer_id,product_id,order_date FROM orders WHERE id={id}"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
 
     def delete_order_by_id(self, id):
@@ -105,10 +110,12 @@ class Database:
         query = "SELECT id FROM customers"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
 
     def get_customers_id_from_orders_by_id(self, id):
         query = f"SELECT customer_id FROM orders WHERE id={id}"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
+
         return record
